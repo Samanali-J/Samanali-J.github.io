@@ -173,9 +173,9 @@
     white-space:nowrap;
   }
   .project-img{
-    width:100%; display:block;
+    width:100%; height:220px; object-fit:cover; display:block;
     border:1px solid var(--line); border-radius:6px;
-    margin:0 0 24px;
+    margin:0 0 22px;
   }
   .project p.desc{color:var(--ink-soft); max-width:74ch; margin:0 0 20px;}
   .callout{
@@ -203,6 +203,39 @@
   }
   .project-link:hover{color:var(--teal); border-color:var(--teal);}
   .project-link svg{width:13px; height:13px;}
+
+  /* ---------- projects carousel: one project per screen, slide horizontally ---------- */
+  .projects-viewport{position:relative;}
+  .projects-track{
+    display:flex; gap:28px; overflow-x:auto; scroll-snap-type:x mandatory;
+    scroll-behavior:smooth; padding-bottom:8px; margin:0 -4px;
+    -webkit-overflow-scrolling:touch;
+  }
+  .projects-track::-webkit-scrollbar{display:none;}
+  .projects-track{scrollbar-width:none;}
+  .projects-track .project{
+    flex:0 0 100%; scroll-snap-align:start; margin-bottom:0;
+  }
+  .projects-nav{
+    display:flex; align-items:center; justify-content:space-between;
+    margin-top:22px;
+  }
+  .projects-arrows{display:flex; gap:10px;}
+  .proj-arrow{
+    width:40px; height:40px; border-radius:50%; border:1px solid var(--line-strong);
+    background:var(--card); display:flex; align-items:center; justify-content:center;
+    cursor:pointer; color:var(--ink); transition:background .18s ease, border-color .18s ease;
+  }
+  .proj-arrow:hover{background:var(--bg-alt); border-color:var(--teal);}
+  .proj-arrow:disabled{opacity:0.35; cursor:default; pointer-events:none;}
+  .proj-arrow svg{width:18px; height:18px;}
+  .projects-dots{display:flex; gap:8px;}
+  .proj-dot{
+    width:8px; height:8px; border-radius:50%; background:var(--line-strong);
+    border:none; padding:0; cursor:pointer; transition:background .18s ease, transform .18s ease;
+  }
+  .proj-dot.active{background:var(--teal); transform:scale(1.25);}
+  .proj-count{font-family:'IBM Plex Mono', monospace; font-size:0.78rem; color:var(--ink-soft);}
 
   /* ---------- skills stack (vertical timeline of skill layers) ---------- */
   .stack{border-left:2px solid var(--line-strong); margin-left:6px; padding-left:36px;}
@@ -289,6 +322,8 @@
   @media (max-width:520px){
     .wrap{padding:0 20px;}
     .project{padding:26px;}
+    .project-img{height:170px;}
+    .projects-nav{flex-wrap:wrap; gap:14px;}
   }
 </style>
 </head>
@@ -352,10 +387,9 @@
       </div>
       <div class="reveal">
         <div class="quote-mark">“</div>
-        <p><b>The pull toward this field came from watching how much of the AI conversation actually comes down to data.</b> As AI systems kept improving, it became clear that data was the one thing underneath all of it, and that data can say a great deal about almost anything, provided someone knows how to handle it and present it in a way that means something to the person reading it. That question was interesting enough on its own that I majored in Advanced Data Science at RMIT, so I could study it properly rather than pick it up in pieces later.</p>
-        <p>That same curiosity is what led me into Honours, where my research looks at Visual Prompt Engineering for Vision-Language Models in Radiology. Medical imaging is a demanding place to work with these models, since a wrong interpretation has real consequences and the field is still new enough that how you prompt a model changes what it actually picks up on in a scan. Working through that gap between a model's raw capability and what it reliably delivers is what keeps the research interesting rather than routine.</p>
-        <p>Alongside that, I've been building toward Cyber Security &amp; Digital Forensics, because handling data responsibly means treating it as sensitive by default, not as an afterthought once the modelling is done. The mental health chatbot I built reflects that: it only answers from documents retrieved from four trusted organisations, so a hallucinated response can't stand in for professional information on someone's own wellbeing. Learning to secure and audit data has become as central to how I work as the analysis itself.</p>
-        <p>Outside the technical side, I've spent the past two years running student events, mentoring classmates through machine learning coursework, and handling publicity for a cultural association with hundreds of members, since explaining findings to people who didn't build the model is a skill worth practising as much as the modelling itself. Sport has stayed a constant through all of it, mostly as a reason to step away from a screen.</p>
+        <p><b>Most of my work happens at the point where raw data turns into something someone can act on.</b> I've built vector search systems with FAISS, trained and evaluated models with scikit-learn, and rebuilt messy exports into reports that non-technical teams can read without help, because a model is only worth building if the person on the other end can rely on what it tells them.</p>
+        <p>Responsible AI isn't something I add at the end. The mental health chatbot I built is grounded in retrieval, meaning it can only answer from documents it has actually pulled from four trusted organisations, because a hallucinated answer matters a great deal more when someone is asking about their own wellbeing. That habit of verifying output rather than trusting the first result carries through everything else I build.</p>
+        <p>Away from the technical side, I've spent the past two years running student events, mentoring classmates through machine learning coursework, and handling publicity for a cultural association with hundreds of members. Communicating findings to stakeholders who didn't build the model is a skill I use as often as the modelling itself.</p>
       </div>
     </div>
   </section>
@@ -368,6 +402,9 @@
         <h2 class="sec-title">Projects</h2>
         <p>Each project started with a real gap: data that existed but was not usable in its current form, or a hypothesis nobody had tested against evidence. The engineering work was in closing that gap reliably.</p>
       </div>
+
+      <div class="projects-viewport">
+      <div class="projects-track" id="projectsTrack">
 
       <!-- Project 1: mental health RAG chatbot -->
       <div class="project reveal">
@@ -466,6 +503,27 @@
           <span class="tag">Python</span><span class="tag">TensorFlow</span><span class="tag">Keras</span>
           <span class="tag">BERT</span><span class="tag">ResNet50</span><span class="tag">scikit-learn</span>
         </div>
+      </div>
+
+      </div>
+
+      <div class="projects-nav">
+        <span class="proj-count"><span id="projCurrent">1</span> / 4</span>
+        <div class="projects-dots" id="projectsDots">
+          <button class="proj-dot active" aria-label="Go to project 1" data-i="0"></button>
+          <button class="proj-dot" aria-label="Go to project 2" data-i="1"></button>
+          <button class="proj-dot" aria-label="Go to project 3" data-i="2"></button>
+          <button class="proj-dot" aria-label="Go to project 4" data-i="3"></button>
+        </div>
+        <div class="projects-arrows">
+          <button class="proj-arrow" id="projPrev" aria-label="Previous project" disabled>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
+          </button>
+          <button class="proj-arrow" id="projNext" aria-label="Next project">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"/></svg>
+          </button>
+        </div>
+      </div>
       </div>
     </div>
   </section>
@@ -665,6 +723,36 @@
     });
   }, { threshold: 0.15 });
   document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+  // Projects carousel: one project per screen, arrows/dots slide horizontally
+  const track = document.getElementById('projectsTrack');
+  if (track) {
+    const cards = [...track.children];
+    const dots = [...document.querySelectorAll('.proj-dot')];
+    const prevBtn = document.getElementById('projPrev');
+    const nextBtn = document.getElementById('projNext');
+    const counter = document.getElementById('projCurrent');
+
+    const goTo = (i) => {
+      i = Math.max(0, Math.min(cards.length - 1, i));
+      cards[i].scrollIntoView({ behavior: 'smooth', inline: 'start', block: 'nearest' });
+    };
+
+    const updateActive = () => {
+      const i = Math.round(track.scrollLeft / track.clientWidth);
+      dots.forEach((d, di) => d.classList.toggle('active', di === i));
+      if (counter) counter.textContent = i + 1;
+      if (prevBtn) prevBtn.disabled = i === 0;
+      if (nextBtn) nextBtn.disabled = i === cards.length - 1;
+    };
+
+    dots.forEach(d => d.addEventListener('click', () => goTo(parseInt(d.dataset.i, 10))));
+    prevBtn.addEventListener('click', () => goTo(Math.round(track.scrollLeft / track.clientWidth) - 1));
+    nextBtn.addEventListener('click', () => goTo(Math.round(track.scrollLeft / track.clientWidth) + 1));
+    track.addEventListener('scroll', () => { window.clearTimeout(track._t); track._t = window.setTimeout(updateActive, 80); });
+    window.addEventListener('resize', updateActive);
+    updateActive();
+  }
 </script>
 
 </body>
