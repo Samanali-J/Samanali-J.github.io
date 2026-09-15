@@ -1,0 +1,668 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Samanali Jayarathna — Data Scientist</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  /* Color palette and shared layout variables */
+  :root{
+    --bg:#FBF1F4;
+    --bg-alt:#F4E1E8;
+    --card:#FFFCFD;
+    --ink:#3B1524;
+    --ink-soft:#7C4F5F;
+    --line:#EAD4DC;
+    --line-strong:#D9AFC0;
+    --teal:#A6285A;
+    --teal-soft:#C97A98;
+    --amber:#C65D74;
+    --amber-soft:#E7A9BA;
+    --radius-card:8px;
+    --radius-pill:999px;
+    --maxw:1120px;
+  }
+  /* Base resets */
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0;
+    background:var(--bg);
+    color:var(--ink);
+    font-family:'IBM Plex Sans', sans-serif;
+    font-size:16px;
+    line-height:1.65;
+    -webkit-font-smoothing:antialiased;
+  }
+  h1,h2,h3{
+    font-family:'Space Grotesk', sans-serif;
+    font-weight:600;
+    line-height:1.1;
+    margin:0;
+  }
+  a{color:inherit;}
+  .mono{font-family:'IBM Plex Mono', monospace;}
+  .wrap{max-width:var(--maxw); margin:0 auto; padding:0 28px;}
+  section{padding:96px 0;}
+  .eyebrow{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:0.72rem;
+    letter-spacing:0.14em;
+    text-transform:uppercase;
+    color:var(--teal);
+    margin:0 0 14px 0;
+    display:flex; align-items:center; gap:10px;
+  }
+  .eyebrow::before{content:""; width:22px; height:1px; background:var(--teal);}
+
+  /* Fade-and-rise animation used on scroll for most sections */
+  .reveal{opacity:0; transform:translateY(18px); transition:opacity .7s ease, transform .7s ease;}
+  .reveal.in-view{opacity:1; transform:translateY(0);}
+
+  /* ---------- top navigation bar ---------- */
+  header.nav{
+    position:sticky; top:0; z-index:50;
+    background:rgba(241,243,238,0.86);
+    backdrop-filter:blur(8px);
+    border-bottom:1px solid var(--line);
+  }
+  .nav-inner{
+    max-width:var(--maxw); margin:0 auto; padding:16px 28px;
+    display:flex; align-items:center; justify-content:space-between;
+  }
+  .logo{
+    font-family:'Space Grotesk', sans-serif; font-weight:700; font-size:1.05rem;
+    letter-spacing:0.02em; text-decoration:none; display:flex; align-items:center; gap:9px;
+  }
+  .logo-mark{
+    width:30px; height:30px; border-radius:50%;
+    background:var(--teal); color:#fff;
+    display:flex; align-items:center; justify-content:center;
+    font-family:'IBM Plex Mono', monospace; font-size:0.72rem; font-weight:500;
+  }
+  nav.links{display:flex; gap:30px;}
+  nav.links a{
+    text-decoration:none; font-size:0.9rem; color:var(--ink-soft);
+    transition:color .2s ease; position:relative;
+  }
+  nav.links a:hover{color:var(--ink);}
+  .nav-cta{
+    font-family:'IBM Plex Mono', monospace; font-size:0.78rem;
+    border:1px solid var(--ink); border-radius:var(--radius-pill);
+    padding:8px 18px; text-decoration:none; white-space:nowrap;
+    transition:background .2s ease, color .2s ease;
+  }
+  .nav-cta:hover{background:var(--ink); color:var(--bg);}
+  .burger{display:none; background:none; border:none; cursor:pointer; padding:6px;}
+  .burger span{display:block; width:22px; height:2px; background:var(--ink); margin:5px 0;}
+
+  /* ---------- hero / intro ---------- */
+  .hero{padding:88px 0 0;}
+  .hero-grid{max-width:900px; margin-inline:auto; text-align:left;}
+  .hero h1{font-size:clamp(2.8rem, 7vw, 5.4rem); letter-spacing:-0.025em;}
+  .hero h1 .surname{color:var(--teal); display:block;}
+  .hero .tagline{
+    font-size:clamp(1.15rem, 1.9vw, 1.5rem);
+    color:var(--ink); margin:26px 0 20px; max-width:42ch; font-weight:500; line-height:1.45;
+  }
+  .hero p.lede{color:var(--ink-soft); max-width:72ch; margin:0 0 34px; font-size:1rem;}
+  .btn-row{display:flex; flex-wrap:wrap; gap:12px;}
+  .btn{
+    text-decoration:none; font-size:0.88rem; font-family:'IBM Plex Mono', monospace;
+    padding:11px 20px; border-radius:var(--radius-pill);
+    display:inline-flex; align-items:center; gap:8px;
+    transition:transform .15s ease, background .2s ease, color .2s ease;
+  }
+  .btn-primary{background:var(--ink); color:var(--bg); border:1px solid var(--ink);}
+  .btn-primary:hover{background:var(--teal); border-color:var(--teal); transform:translateY(-1px);}
+  .btn-ghost{border:1px solid var(--line-strong); color:var(--ink);}
+  .btn-ghost:hover{border-color:var(--ink); transform:translateY(-1px);}
+  .btn svg{width:14px; height:14px;}
+
+  /* ---------- scrolling skills marquee band ---------- */
+  .band{
+    margin-top:76px; border-top:1px solid var(--line); border-bottom:1px solid var(--line);
+    background:var(--bg-alt); overflow:hidden; padding:16px 0;
+  }
+  .band-track{
+    display:flex; width:max-content; gap:0;
+    animation:slide 42s linear infinite;
+  }
+  .band:hover .band-track{animation-play-state:paused;}
+  .band-item{
+    font-family:'IBM Plex Mono', monospace; font-size:0.84rem; color:var(--ink-soft);
+    padding:0 26px; white-space:nowrap; display:flex; align-items:center; gap:26px;
+  }
+  .band-item::after{content:""; width:5px; height:5px; border-radius:50%; background:var(--teal-soft);}
+  @keyframes slide{from{transform:translateX(0);} to{transform:translateX(-50%);}}
+
+  /* Respect users who prefer less motion: turn off animations */
+  @media (prefers-reduced-motion: reduce){
+    .reveal{opacity:1; transform:none; transition:none;}
+    .band-track{animation:none; flex-wrap:wrap; width:100%; justify-content:center;}
+  }
+
+  /* ---------- shared section heading styles ---------- */
+  .sec-title{font-size:clamp(1.7rem, 3vw, 2.3rem); margin-bottom:18px;}
+  .sec-head{max-width:640px; margin-bottom:52px;}
+  .sec-head p{color:var(--ink-soft); margin:0;}
+
+  /* ---------- about section ---------- */
+  .about{background:var(--bg-alt); border-top:1px solid var(--line); border-bottom:1px solid var(--line);}
+  .about-grid{display:grid; grid-template-columns:0.9fr 1.4fr; gap:56px;}
+  .about-grid p{color:var(--ink-soft); margin:0 0 16px;}
+  .about-grid p b{color:var(--ink); font-weight:600;}
+  .quote-mark{font-family:'Space Grotesk'; font-size:3rem; color:var(--teal-soft); line-height:1; margin-bottom:6px;}
+
+  /* ---------- project cards ---------- */
+  .project{
+    display:grid; grid-template-columns:1fr; gap:0;
+    background:var(--card); border:1px solid var(--line); border-radius:var(--radius-card);
+    padding:40px; margin-bottom:28px;
+    transition:box-shadow .25s ease, transform .25s ease, border-color .25s ease;
+  }
+  .project:hover{box-shadow:0 14px 34px rgba(21,34,56,0.08); transform:translateY(-3px); border-color:var(--line-strong);}
+  .project-top{display:flex; justify-content:space-between; align-items:flex-start; gap:20px; flex-wrap:wrap; margin-bottom:18px;}
+  .project h3{font-size:1.5rem; margin-bottom:4px;}
+  .project-tag{
+    font-family:'IBM Plex Mono', monospace; font-size:0.7rem; letter-spacing:0.1em; text-transform:uppercase;
+    color:var(--amber); border:1px solid var(--amber-soft); padding:5px 11px; border-radius:var(--radius-pill);
+    white-space:nowrap;
+  }
+  .project p.desc{color:var(--ink-soft); max-width:74ch; margin:0 0 20px;}
+  .callout{
+    background:var(--bg-alt); border-left:3px solid var(--teal);
+    padding:16px 20px; border-radius:0 6px 6px 0; margin:0 0 22px;
+  }
+  .callout .label{font-family:'IBM Plex Mono', monospace; font-size:0.72rem; text-transform:uppercase; letter-spacing:0.1em; color:var(--teal); margin-bottom:6px; display:block;}
+  .callout p{margin:0; color:var(--ink-soft); font-size:0.95rem;}
+  .tags{display:flex; flex-wrap:wrap; gap:8px; margin-bottom:20px;}
+  .tag{
+    font-family:'IBM Plex Mono', monospace; font-size:0.74rem; color:var(--ink-soft);
+    border:1px solid var(--line-strong); padding:5px 12px; border-radius:var(--radius-pill);
+  }
+  .repo-note{
+    display:inline-flex; align-items:center; gap:8px;
+    font-family:'IBM Plex Mono', monospace; font-size:0.8rem; color:var(--ink-soft);
+    background:var(--bg-alt); border:1px solid var(--line);
+    padding:8px 14px; border-radius:var(--radius-pill);
+  }
+  .repo-note svg{width:13px; height:13px; flex-shrink:0;}
+  .project-link{
+    font-family:'IBM Plex Mono', monospace; font-size:0.85rem; text-decoration:none;
+    color:var(--ink); display:inline-flex; align-items:center; gap:7px; border-bottom:1px solid var(--ink);
+    padding-bottom:2px; transition:color .2s ease, border-color .2s ease;
+  }
+  .project-link:hover{color:var(--teal); border-color:var(--teal);}
+  .project-link svg{width:13px; height:13px;}
+
+  /* ---------- skills stack (vertical timeline of skill layers) ---------- */
+  .stack{border-left:2px solid var(--line-strong); margin-left:6px; padding-left:36px;}
+  .layer{position:relative; padding:22px 0; border-top:1px solid var(--line);}
+  .layer:first-child{border-top:none;}
+  .layer::before{
+    content:""; position:absolute; left:-42px; top:28px; width:10px; height:10px;
+    border-radius:50%; background:var(--card); border:2px solid var(--teal);
+  }
+  .layer-head{display:flex; align-items:baseline; gap:14px; margin-bottom:12px; flex-wrap:wrap;}
+  .layer-num{font-family:'IBM Plex Mono', monospace; font-size:0.72rem; color:var(--ink-soft);}
+  .layer h4{font-family:'Space Grotesk'; font-size:1.05rem; font-weight:600; margin:0;}
+  .pills{display:flex; flex-wrap:wrap; gap:8px;}
+  .pill{
+    font-family:'IBM Plex Mono', monospace; font-size:0.78rem;
+    background:var(--bg-alt); border:1px solid var(--line); padding:6px 13px; border-radius:var(--radius-pill);
+    color:var(--ink);
+  }
+
+  /* ---------- work/volunteering timeline ---------- */
+  .timeline{position:relative; margin-left:6px; border-left:2px solid var(--line-strong); padding-left:36px;}
+  .tl-item{position:relative; padding-bottom:40px;}
+  .tl-item:last-child{padding-bottom:0;}
+  .tl-item::before{
+    content:""; position:absolute; left:-42px; top:4px; width:10px; height:10px; border-radius:50%;
+    background:var(--card); border:2px solid var(--amber);
+  }
+  .tl-item.work::before{border-color:var(--teal);}
+  .tl-head{display:flex; flex-wrap:wrap; align-items:baseline; gap:12px; margin-bottom:8px;}
+  .tl-date{font-family:'IBM Plex Mono', monospace; font-size:0.76rem; color:var(--ink-soft);}
+  .tl-item h4{font-size:1.1rem; font-family:'Space Grotesk'; font-weight:600;}
+  .tl-org{color:var(--ink-soft); font-size:0.9rem; margin-bottom:6px;}
+  .tl-type{
+    font-family:'IBM Plex Mono', monospace; font-size:0.68rem; text-transform:uppercase; letter-spacing:0.08em;
+    padding:3px 9px; border-radius:var(--radius-pill); border:1px solid var(--teal-soft); color:var(--teal);
+  }
+  .tl-item.volunteer .tl-type{border-color:var(--amber-soft); color:var(--amber);}
+  .tl-item.parttime::before{border-color:var(--line-strong);}
+  .tl-item.parttime .tl-type{border-color:var(--line-strong); color:var(--ink-soft);}
+  .tl-item p.tl-desc{color:var(--ink-soft); margin:0; max-width:64ch; font-size:0.95rem;}
+
+  /* ---------- education cards and certification list ---------- */
+  .edu-grid{display:grid; grid-template-columns:repeat(auto-fit, minmax(260px, 1fr)); gap:24px;}
+  .edu-card{background:var(--card); border:1px solid var(--line); border-radius:var(--radius-card); padding:28px;}
+  .edu-card h4{font-size:1.15rem; margin-bottom:6px;}
+  .edu-card .org{color:var(--teal); font-size:0.9rem; margin-bottom:4px;}
+  .edu-card .date{font-family:'IBM Plex Mono', monospace; font-size:0.78rem; color:var(--ink-soft); margin-bottom:14px; display:block;}
+  .edu-card ul{margin:0; padding-left:18px; color:var(--ink-soft); font-size:0.92rem;}
+  .edu-card li{margin-bottom:6px;}
+  .cert-heading{font-size:1.15rem; margin-top:52px; margin-bottom:2px;}
+  .cert-list{margin-top:12px; display:flex; flex-direction:column; gap:0;}
+  .cert-row{
+    display:flex; justify-content:space-between; gap:20px; padding:14px 0; border-top:1px solid var(--line);
+    font-size:0.92rem; flex-wrap:wrap;
+  }
+  .cert-row span.date{font-family:'IBM Plex Mono', monospace; font-size:0.78rem; color:var(--ink-soft); white-space:nowrap;}
+
+  /* ---------- footer / contact ---------- */
+  footer{background:var(--ink); color:var(--bg); padding:80px 0 32px;}
+  footer .sec-title{color:var(--bg);}
+  footer .lede{color:#E3B9C6; max-width:50ch; margin:14px 0 34px; font-size:1.3rem; line-height:1.5;}
+  .footer-cta{display:flex; gap:16px; flex-wrap:wrap; margin-bottom:56px;}
+  footer .btn-primary{background:var(--bg); color:var(--ink); border-color:var(--bg);}
+  footer .btn-primary:hover{background:var(--teal-soft); border-color:var(--teal-soft); color:#fff;}
+  footer .btn-ghost{border-color:#6B3550; color:var(--bg);}
+  footer .btn-ghost:hover{border-color:var(--bg);}
+  .foot-bottom{
+    border-top:1px solid #5C2740; padding-top:24px; display:flex; justify-content:space-between;
+    flex-wrap:wrap; gap:12px; font-family:'IBM Plex Mono', monospace; font-size:0.76rem; color:#B98A9B;
+  }
+
+  /* ---------- responsive breakpoints ---------- */
+  @media (max-width:880px){
+    nav.links{position:fixed; top:64px; left:0; right:0; background:var(--bg);
+      flex-direction:column; padding:20px 28px; border-bottom:1px solid var(--line);
+      transform:translateY(-130%); transition:transform .3s ease; gap:16px;}
+    nav.links.open{transform:translateY(0);}
+    .burger{display:block;}
+    .nav-cta{display:none;}
+    .about-grid{grid-template-columns:1fr; gap:30px;}
+    .edu-grid{grid-template-columns:1fr;}
+    section{padding:64px 0;}
+  }
+  @media (max-width:520px){
+    .wrap{padding:0 20px;}
+    .project{padding:26px;}
+  }
+</style>
+</head>
+<body>
+
+<!-- Sticky top nav: logo, section links, CV download, mobile burger menu -->
+<header class="nav">
+  <div class="nav-inner">
+    <a href="#top" class="logo"><span class="logo-mark">SJ</span> Samanali Jayarathna</a>
+    <nav class="links" id="navLinks">
+      <a href="#about">About</a>
+      <a href="#projects">Projects</a>
+      <a href="#skills">Skills</a>
+      <a href="#journey">Journey</a>
+      <a href="#education">Education</a>
+    </nav>
+    <a href="resume.pdf" download class="nav-cta">Download CV ↓</a>
+    <button class="burger" id="burgerBtn" aria-label="Toggle menu"><span></span><span></span><span></span></button>
+  </div>
+</header>
+
+<main id="top">
+
+  <!-- ================= HERO ================= -->
+  <!-- Name, one-line tagline, longer intro paragraph, and primary contact buttons -->
+  <section class="hero">
+    <div class="wrap hero-grid">
+      <div>
+        <p class="eyebrow">Data Science · Melbourne, VIC</p>
+        <h1>Samanali<span class="surname">Jayarathna</span></h1>
+        
+        <p class="tagline">Data Scientist | Machine Learning | Data Engineering<br>Automating analytics pipelines and building scalable predictive models</p>
+        <div class="btn-row">
+          <a href="mailto:samanalij27@outlook.com" class="btn btn-primary">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16v16H4z"/><path d="M4 4l8 8 8-8"/></svg>
+            Email me
+          </a>
+          <a href="resume.pdf" download class="btn btn-ghost">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><path d="M7 10l5 5 5-5"/><path d="M12 15V3"/></svg>
+            Download CV
+          </a>
+          <a href="https://github.com/Samanali-J" target="_blank" rel="noopener" class="btn btn-ghost">GitHub ↗</a>
+          <a href="https://www.linkedin.com/in/samanali-jayarathna-137bb2304/" target="_blank" rel="noopener" class="btn btn-ghost">LinkedIn ↗</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Auto-scrolling strip of tech/skill keywords, duplicated once so the loop is seamless -->
+    <div class="band" aria-hidden="true">
+      <div class="band-track">
+        <div class="band-item">Python</div><div class="band-item">FAISS</div><div class="band-item">LLMs &amp; RAG</div><div class="band-item">SQL</div><div class="band-item">Pandas</div><div class="band-item">scikit-learn</div><div class="band-item">TensorFlow</div><div class="band-item">Keras</div><div class="band-item">NetworkX</div><div class="band-item">AWS</div><div class="band-item">Docker</div><div class="band-item">Power BI</div><div class="band-item">Flask</div><div class="band-item">Digital Forensics</div>
+        <div class="band-item">Python</div><div class="band-item">FAISS</div><div class="band-item">LLMs &amp; RAG</div><div class="band-item">SQL</div><div class="band-item">Pandas</div><div class="band-item">scikit-learn</div><div class="band-item">TensorFlow</div><div class="band-item">Keras</div><div class="band-item">NetworkX</div><div class="band-item">AWS</div><div class="band-item">Docker</div><div class="band-item">Power BI</div><div class="band-item">Flask</div><div class="band-item">Digital Forensics</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= ABOUT ================= -->
+  <!-- Two-column bio: short heading on the left, longer narrative paragraphs on the right -->
+  <section class="about" id="about">
+    <div class="wrap about-grid">
+      <div class="reveal">
+        <p class="eyebrow">About</p>
+        <h2 class="sec-title">Where data engineering meets applied ML</h2>
+      </div>
+      <div class="reveal">
+        <div class="quote-mark">“</div>
+        <p><b>Most of my work happens at the point where raw data turns into something someone can act on.</b> I've built vector search systems with FAISS, trained and evaluated models with scikit-learn, and rebuilt messy exports into reports that non-technical teams can read without help, because a model is only worth building if the person on the other end can rely on what it tells them.</p>
+        <p>Responsible AI isn't something I add at the end. The mental health chatbot I built is grounded in retrieval, meaning it can only answer from documents it has actually pulled from four trusted organisations, because a hallucinated answer matters a great deal more when someone is asking about their own wellbeing. That habit of verifying output rather than trusting the first result carries through everything else I build.</p>
+        <p>Away from the technical side, I've spent the past two years running student events, mentoring classmates through machine learning coursework, and handling publicity for a cultural association with hundreds of members. Communicating findings to stakeholders who didn't build the model is a skill I use as often as the modelling itself.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= PROJECTS ================= -->
+  <!-- Portfolio: one .project card per project, each with a description, a "the problem" callout, and tech tags -->
+  <section id="projects">
+    <div class="wrap">
+      <div class="sec-head reveal">
+        <p class="eyebrow">Selected Work</p>
+        <h2 class="sec-title">Projects</h2>
+        <p>Each project started with a real gap: data that existed but was not usable in its current form, or a hypothesis nobody had tested against evidence. The engineering work was in closing that gap reliably.</p>
+      </div>
+
+      <!-- Project 1: mental health RAG chatbot -->
+      <div class="project reveal">
+        <div class="project-top">
+          <div>
+            <h3>Eunoia — a grounded mental health chatbot</h3>
+          </div>
+          <span class="project-tag">RAG System</span>
+        </div>
+        <p class="desc">Beyond Blue, Lifeline, Headspace and the Black Dog Institute all publish reliable mental health information, but it sits spread across four separate sites. Eunoia scrapes and indexes that content into FAISS vector stores, with embeddings generated by nomic-embed-text. A dual-index retrieval setup then searches a general knowledge base and a curated Q&amp;A bank in parallel, so whichever source holds the closest match is what the answer gets built from.</p>
+        <div class="callout">
+          <span class="label">The problem</span>
+          <p>Language models hallucinate when they're uncertain, which is the last thing you want when someone may be asking about their own mental health. I built a prompt-grounding guardrail that restricts every response to the retrieved context, alongside an evaluation framework to measure retrieval quality and response reliability, so the guardrail's effect could actually be verified rather than assumed. The whole thing ships as a Flask app with streaming responses.</p>
+        </div>
+        <div class="tags">
+          <span class="tag">Python</span><span class="tag">RAG</span><span class="tag">FAISS</span>
+          <span class="tag">Ollama</span><span class="tag">Flask</span><span class="tag">Sentence Embeddings</span>
+        </div>
+        <a href="https://github.com/Samanali-J/Eunoia" target="_blank" rel="noopener" class="project-link">
+          View repository
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17L17 7M7 7h10v10"/></svg>
+        </a>
+      </div>
+
+      <!-- Project 2: Red Cross Lifeblood alarm/schedule reconciliation pipeline (client code kept private) -->
+      <div class="project reveal">
+        <div class="project-top">
+          <div>
+            <h3>Tracking alarm schedules across 82 donor centres</h3>
+          </div>
+          <span class="project-tag">Data Pipeline</span>
+        </div>
+        <p class="desc">Delivered as a Work Integrated Learning project with Australian Red Cross Lifeblood, who needed to verify whether the alarm schedule at each of its 82 fixed donor centres matched that site's actual operating hours. Done manually, that means reading hundreds of pages of PDFs. I built a four-script Python pipeline to extract, clean and reconcile both datasets, using the Claude Vision API to pull structured schedule data out of multi-page documents that pdfplumber and PyMuPDF couldn't parse reliably on their own.</p>
+        <div class="callout">
+          <span class="label">The problem</span>
+          <p>Halfway through, the client's business rules changed: some centres needed wider tolerance windows than others. Rather than hardcoding one rule across the board, I built a configurable rule layer into the reconciliation engine, so it could keep flagging mismatches, missing schedules and internal scheduling conflicts across every site-day combination regardless of which rule applied.</p>
+        </div>
+        <p class="desc" style="margin-bottom:20px;">The output feeds a Power BI dashboard with KPI cards, state and day-level breakdowns, and a site deep-dive page, giving the operations team one place to catch scheduling errors across the national network before they become a real problem.</p>
+        <div class="tags">
+          <span class="tag">Python</span><span class="tag">Pandas</span><span class="tag">Claude Vision API</span>
+          <span class="tag">PyMuPDF</span><span class="tag">pdfplumber</span><span class="tag">Power BI</span>
+        </div>
+        <span class="repo-note">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg>
+          Industry WIL project — code not publicly available
+        </span>
+      </div>
+
+      <!-- Project 3: cross-platform (Reddit vs YouTube) travel sentiment and network analysis -->
+      <div class="project reveal">
+        <div class="project-top">
+          <div>
+            <h3>Do Reddit and YouTube talk about travel differently?</h3>
+          </div>
+          <span class="project-tag">NLP &amp; Network Analysis</span>
+        </div>
+        <p class="desc">Reddit and YouTube discuss travel in very different registers, one skewing to long-form threads and the other to short reactions, so a fair comparison needed a pipeline built for both. I collected posts and comments via PRAW and the YouTube Data API, extracted every country mention, and scored sentiment using VADER alongside transformer-based models to test whether the two platforms actually agree on how a destination is talked about.</p>
+        <div class="callout">
+          <span class="label">The problem</span>
+          <p>A five-word YouTube comment and a three-paragraph Reddit thread need different handling before their sentiment scores mean the same thing. I standardised preprocessing and scoring across both sources, then tested three hypotheses: that sentiment differs meaningfully by platform, that global events shift which countries get discussed, and that countries mentioned together form communities reflecting real regional ties rather than noise.</p>
+        </div>
+        <p class="desc" style="margin-bottom:20px;">The most telling part was building the country co-mention graph in NetworkX and running Louvain community detection over it. The clusters it surfaced lined up with genuine regional and cultural groupings, which was the strongest evidence the co-mention pattern was picking up something real rather than coincidence.</p>
+        <div class="tags">
+          <span class="tag">Python</span><span class="tag">PRAW</span><span class="tag">YouTube Data API</span>
+          <span class="tag">VADER</span><span class="tag">Transformers</span><span class="tag">NetworkX</span><span class="tag">Louvain Detection</span>
+        </div>
+        <a href="https://github.com/Samanali-J/Cross-Platform-Country-Sentiment-Analysis-in-Travel-" target="_blank" rel="noopener" class="project-link">
+          View repository
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17L17 7M7 7h10v10"/></svg>
+        </a>
+      </div>
+
+      <!-- Project 4: multimodal visual entailment (image + caption) deep learning models -->
+      <div class="project reveal">
+        <div class="project-top">
+          <div>
+            <h3>Teaching a model to check an image against a caption</h3>
+          </div>
+          <span class="project-tag">Deep Learning</span>
+        </div>
+        <p class="desc">Visual entailment asks whether a written statement is actually supported by an image, which means a model has to read both and reconcile them. I built and evaluated three multimodal architectures pairing ResNet50 for the image side with BERT for the text, progressing from simple concatenation-based fusion through to cross-attention and self-attention, to see how much the way the two streams are joined actually matters.</p>
+        <div class="callout">
+          <span class="label">The problem</span>
+          <p>Multiple captions can describe the same image, so a naive random split leaks correlated samples between train and test and inflates the results. I used stratified image-level splitting to keep every image entirely within one split, then judged model selection on accuracy, AUC, precision and recall rather than accuracy alone.</p>
+        </div>
+        <p class="desc" style="margin-bottom:20px;">A documented hyperparameter search across learning rate, dropout and layer-freezing strategies lifted validation AUC from 0.71 to 0.82, and the final model reached 72% accuracy and 0.80 AUC on held-out data, which held up close enough to validation to suggest it was generalising rather than memorising.</p>
+        <div class="tags">
+          <span class="tag">Python</span><span class="tag">TensorFlow</span><span class="tag">Keras</span>
+          <span class="tag">BERT</span><span class="tag">ResNet50</span><span class="tag">scikit-learn</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= SKILLS ================= -->
+  <!-- Skills grouped into layers (languages, data/modelling, infra, delivery, cyber), shown as a vertical stack of pill tags -->
+  <section id="skills" style="background:var(--bg-alt); border-top:1px solid var(--line); border-bottom:1px solid var(--line);">
+    <div class="wrap">
+      <div class="sec-head reveal">
+        <p class="eyebrow">What I Work With</p>
+        <h2 class="sec-title">Skills</h2>
+      </div>
+
+      <div class="stack reveal">
+        <div class="layer">
+          <div class="layer-head"><span class="layer-num">01</span><h4>Languages</h4></div>
+          <div class="pills">
+            <span class="pill">Python</span><span class="pill">R</span><span class="pill">SQL</span>
+          </div>
+        </div>
+        <div class="layer">
+          <div class="layer-head"><span class="layer-num">02</span><h4>Data &amp; Modelling</h4></div>
+          <div class="pills">
+            <span class="pill">Pandas</span><span class="pill">NumPy</span><span class="pill">scikit-learn</span>
+            <span class="pill">TensorFlow</span><span class="pill">Keras</span><span class="pill">FAISS</span>
+            <span class="pill">Matplotlib</span><span class="pill">seaborn</span><span class="pill">Plotly</span>
+            <span class="pill">NetworkX</span><span class="pill">NLP (VADER / Transformers)</span>
+          </div>
+        </div>
+        <div class="layer">
+          <div class="layer-head"><span class="layer-num">03</span><h4>Storage &amp; Infrastructure</h4></div>
+          <div class="pills">
+            <span class="pill">MySQL</span><span class="pill">MongoDB</span><span class="pill">AWS (EC2, S3, Lambda, ECS)</span>
+            <span class="pill">Docker</span><span class="pill">GitHub</span>
+          </div>
+        </div>
+        <div class="layer">
+          <div class="layer-head"><span class="layer-num">04</span><h4>Delivery &amp; Reporting</h4></div>
+          <div class="pills">
+            <span class="pill">Power BI</span><span class="pill">Excel</span><span class="pill">Flask</span>
+            <span class="pill">Agile Delivery</span><span class="pill">CI / CD</span>
+          </div>
+        </div>
+        <div class="layer">
+          <div class="layer-head"><span class="layer-num">05</span><h4>Cyber &amp; Digital Forensics</h4></div>
+          <div class="pills">
+            <span class="pill">Cybersecurity Fundamentals</span><span class="pill">FTK</span>
+            <span class="pill">Autopsy</span><span class="pill">CISCO</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= JOURNEY ================= -->
+  <!-- Work and volunteering history, newest first, styled as a vertical timeline -->
+  <section id="journey">
+    <div class="wrap">
+      <div class="sec-head reveal">
+        <p class="eyebrow">Work &amp; Volunteering</p>
+        <h2 class="sec-title">Experience</h2>
+      </div>
+
+      <div class="timeline reveal">
+        <div class="tl-item parttime">
+          <div class="tl-head">
+            <span class="tl-type">Part Time</span>
+            <span class="tl-date">Aug 2026 – Present</span>
+          </div>
+          <h4>Content Creator</h4>
+          <div class="tl-org">ICS Migration and Education</div>
+          <p class="tl-desc">Plan, film and edit short-form video content for the business's social channels on a regular posting schedule, and front a new product launch on camera. Much of the work is translating migration and education services into content a broad audience can follow, balancing accuracy against approachability.</p>
+        </div>
+        <div class="tl-item volunteer">
+          <div class="tl-head">
+            <span class="tl-type">Volunteering</span>
+            <span class="tl-date">Mar 2026 – Present</span>
+          </div>
+          <h4>Event Coordinator</h4>
+          <div class="tl-org">RMIT SWITCH</div>
+          <p class="tl-desc">Sit on the organising committee for SWITCH's tech events, from inter-university networking nights to LeetCode competitions and sessions with industry partners like Notion, managing logistics, timelines and on-the-day operations.</p>
+        </div>
+        <div class="tl-item volunteer">
+          <div class="tl-head">
+            <span class="tl-type">Volunteering</span>
+            <span class="tl-date">Feb 2026 – Present</span>
+          </div>
+          <h4>Peer Mentor, Machine Learning</h4>
+          <div class="tl-org">RMIT University</div>
+          <p class="tl-desc">Support other students through model evaluation, overfitting and implementation trade-offs, bridging the theory from lectures with practical Python application.</p>
+        </div>
+        <div class="tl-item work">
+          <div class="tl-head">
+            <span class="tl-type">Work Experience</span>
+            <span class="tl-date">Nov 2025 – Feb 2026</span>
+          </div>
+          <h4>Trainee</h4>
+          <div class="tl-org">SAW Engineering Pvt Ltd</div>
+          <p class="tl-desc">Supported the environmental sustainability division on food waste composting and solar panel projects, analysed product specification and cost data into structured reports for internal stakeholders, and represented the company at industry exhibitions across Sri Lanka.</p>
+        </div>
+        <div class="tl-item parttime">
+          <div class="tl-head">
+            <span class="tl-type">Part Time</span>
+            <span class="tl-date">Feb 2025 – Mar 2026</span>
+          </div>
+          <h4>Retail Assistant</h4>
+          <div class="tl-org">Australian Red Cross, Richmond</div>
+          <p class="tl-desc">Served a wide range of customers and helped keep the store running day to day, working alongside the team on stock and floor duties.</p>
+        </div>
+        <div class="tl-item volunteer">
+          <div class="tl-head">
+            <span class="tl-type">Volunteering</span>
+            <span class="tl-date">Aug 2024 – Aug 2026</span>
+          </div>
+          <h4>Publicity Officer</h4>
+          <div class="tl-org">RMIT Sri Lankan Association</div>
+          <p class="tl-desc">Run the association's social media and lead promotion for cultural events with hundreds of guests, making the posters and reels and helping things run smoothly on the day.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= EDUCATION ================= -->
+  <!-- Degree cards plus a simple certifications list below them -->
+  <section id="education" style="background:var(--bg-alt); border-top:1px solid var(--line); border-bottom:1px solid var(--line);">
+    <div class="wrap">
+      <div class="sec-head reveal">
+        <p class="eyebrow">Qualifications</p>
+        <h2 class="sec-title">Education</h2>
+      </div>
+
+      <div class="edu-grid reveal">
+        <div class="edu-card">
+          <h4>Bachelor of Computer Science (Honours)</h4>
+          <div class="org">RMIT University</div>
+          <span class="date">Jul 2026 – Jul 2027</span>
+          <ul>
+            <li>Research year in machine learning, extending the retrieval and RAG work from my data science degree into a formal research project</li>
+          </ul>
+        </div>
+        <div class="edu-card">
+          <h4>Bachelor of Data Science</h4>
+          <div class="org">RMIT University</div>
+          <span class="date">Jul 2023 – Jul 2026</span>
+          <ul>
+            <li>GPA 3.5/4.0, Pass with Distinction</li>
+            <li>Executive Committee, RMIT Sri Lanka Association</li>
+            <li>General Committee, RMIT SWITCH (Society for Women in Information Technology)</li>
+          </ul>
+        </div>
+        <div class="edu-card">
+          <h4>Foundation in Engineering</h4>
+          <div class="org">Swinburne University of Technology</div>
+          <span class="date">Jul 2022 – Jun 2023</span>
+          <ul>
+            <li>Completed a Foundation Year in Engineering ahead of undergraduate study</li>
+          </ul>
+        </div>
+      </div>
+
+      <h3 class="cert-heading reveal">Certifications</h3>
+      <div class="cert-list reveal">
+        <div class="cert-row"><span>RMIT Plus Program, RMIT University</span><span class="date mono">Feb 2026</span></div>
+        <div class="cert-row"><span>Getting Started with Data Analytics on AWS (edX, AWS-DA-02)</span><span class="date mono">Dec 2024</span></div>
+        <div class="cert-row"><span>Data Science: R Basics (edX)</span><span class="date mono">Nov 2023</span></div>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<!-- ================= FOOTER ================= -->
+<!-- Closing contact block: email and social links, plus a bottom bar with name and location -->
+<footer id="contact">
+  <div class="wrap">
+    <p class="eyebrow" style="color:var(--amber-soft);">Contact</p>
+    
+    <div class="footer-cta">
+      <a href="mailto:samanalij27@outlook.com" class="btn btn-primary">samanalij27@outlook.com</a>
+      <a href="https://github.com/Samanali-J" target="_blank" rel="noopener" class="btn btn-ghost">GitHub ↗</a>
+      <a href="https://www.linkedin.com/in/samanali-jayarathna-137bb2304/" target="_blank" rel="noopener" class="btn btn-ghost">LinkedIn ↗</a>
+    </div>
+    <div class="foot-bottom">
+      <span>Samanali Jayarathna · Melbourne, Australia</span>
+
+    </div>
+  </div>
+</footer>
+
+<script>
+  // Mobile nav: toggle the menu open/closed, and close it after any link is tapped
+  const burger = document.getElementById('burgerBtn');
+  const navLinks = document.getElementById('navLinks');
+  burger.addEventListener('click', () => navLinks.classList.toggle('open'));
+  navLinks.querySelectorAll('a').forEach(a => a.addEventListener('click', () => navLinks.classList.remove('open')));
+
+  // Scroll reveal: fade/rise each .reveal element in once it enters the viewport
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('in-view');
+        observer.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.15 });
+  document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+</script>
+
+</body>
+</html>
