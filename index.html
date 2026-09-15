@@ -172,6 +172,11 @@
     color:var(--amber); border:1px solid var(--amber-soft); padding:5px 11px; border-radius:var(--radius-pill);
     white-space:nowrap;
   }
+  .project-img{
+    width:100%; display:block;
+    border:1px solid var(--line); border-radius:6px;
+    margin:0 0 24px;
+  }
   .project p.desc{color:var(--ink-soft); max-width:74ch; margin:0 0 20px;}
   .callout{
     background:var(--bg-alt); border-left:3px solid var(--teal);
@@ -308,13 +313,12 @@
 <main id="top">
 
   <!-- ================= HERO ================= -->
-  <!-- Name, one-line tagline, longer intro paragraph, and primary contact buttons -->
   <section class="hero">
     <div class="wrap hero-grid">
       <div>
         <p class="eyebrow">Data Science · Melbourne, VIC</p>
         <h1>Samanali<span class="surname">Jayarathna</span></h1>
-        
+
         <p class="tagline">Data Scientist | Machine Learning | Data Engineering<br>Automating analytics pipelines and building scalable predictive models</p>
         <div class="btn-row">
           <a href="mailto:samanalij27@outlook.com" class="btn btn-primary">
@@ -331,7 +335,6 @@
       </div>
     </div>
 
-    <!-- Auto-scrolling strip of tech/skill keywords, duplicated once so the loop is seamless -->
     <div class="band" aria-hidden="true">
       <div class="band-track">
         <div class="band-item">Python</div><div class="band-item">FAISS</div><div class="band-item">LLMs &amp; RAG</div><div class="band-item">SQL</div><div class="band-item">Pandas</div><div class="band-item">scikit-learn</div><div class="band-item">TensorFlow</div><div class="band-item">Keras</div><div class="band-item">NetworkX</div><div class="band-item">AWS</div><div class="band-item">Docker</div><div class="band-item">Power BI</div><div class="band-item">Flask</div><div class="band-item">Digital Forensics</div>
@@ -341,7 +344,6 @@
   </section>
 
   <!-- ================= ABOUT ================= -->
-  <!-- Two-column bio: short heading on the left, longer narrative paragraphs on the right -->
   <section class="about" id="about">
     <div class="wrap about-grid">
       <div class="reveal">
@@ -358,7 +360,6 @@
   </section>
 
   <!-- ================= PROJECTS ================= -->
-  <!-- Portfolio: one .project card per project, each with a description, a "the problem" callout, and tech tags -->
   <section id="projects">
     <div class="wrap">
       <div class="sec-head reveal">
@@ -422,12 +423,14 @@
           </div>
           <span class="project-tag">NLP &amp; Network Analysis</span>
         </div>
-        <p class="desc">Reddit and YouTube discuss travel in very different registers, one skewing to long-form threads and the other to short reactions, so a fair comparison needed a pipeline built for both. I collected posts and comments via PRAW and the YouTube Data API, extracted every country mention, and scored sentiment using VADER alongside transformer-based models to test whether the two platforms actually agree on how a destination is talked about.</p>
+        <img class="project-img" src="images/travel-reddit-vs-yt.png"
+             alt="Country co-mention network graph showing regional clusters of destinations discussed on Reddit and YouTube">
+        <p class="desc">Reddit leans to long threads, YouTube to short reactions, so comparing how the two platforms talk about travel needed a pipeline built for both. I collected posts and comments via PRAW and the YouTube Data API, extracted every country mention, and scored sentiment with VADER and transformer models.</p>
         <div class="callout">
           <span class="label">The problem</span>
-          <p>A five-word YouTube comment and a three-paragraph Reddit thread need different handling before their sentiment scores mean the same thing. I standardised preprocessing and scoring across both sources, then tested three hypotheses: that sentiment differs meaningfully by platform, that global events shift which countries get discussed, and that countries mentioned together form communities reflecting real regional ties rather than noise.</p>
+          <p>A five-word comment and a three-paragraph thread can't be scored the same way. I standardised preprocessing across both sources, then tested whether sentiment differs by platform and whether countries mentioned together form real regional groups.</p>
         </div>
-        <p class="desc" style="margin-bottom:20px;">The most telling part was building the country co-mention graph in NetworkX and running Louvain community detection over it. The clusters it surfaced lined up with genuine regional and cultural groupings, which was the strongest evidence the co-mention pattern was picking up something real rather than coincidence.</p>
+        <p class="desc" style="margin-bottom:20px;">Building the co-mention graph in NetworkX and running Louvain community detection produced clusters that matched genuine regional groupings, which was the strongest sign the pattern was real.</p>
         <div class="tags">
           <span class="tag">Python</span><span class="tag">PRAW</span><span class="tag">YouTube Data API</span>
           <span class="tag">VADER</span><span class="tag">Transformers</span><span class="tag">NetworkX</span><span class="tag">Louvain Detection</span>
@@ -446,12 +449,14 @@
           </div>
           <span class="project-tag">Deep Learning</span>
         </div>
-        <p class="desc">Visual entailment asks whether a written statement is actually supported by an image, which means a model has to read both and reconcile them. I built and evaluated three multimodal architectures pairing ResNet50 for the image side with BERT for the text, progressing from simple concatenation-based fusion through to cross-attention and self-attention, to see how much the way the two streams are joined actually matters.</p>
+        <img class="project-img" src="images/teaching-a-model.png"
+             alt="Visual entailment model architecture pairing ResNet50 image features with BERT text encoding">
+        <p class="desc">Visual entailment asks whether a caption is actually supported by an image. I built and evaluated three architectures pairing ResNet50 with BERT, moving from simple concatenation through to cross-attention and self-attention.</p>
         <div class="callout">
           <span class="label">The problem</span>
-          <p>Multiple captions can describe the same image, so a naive random split leaks correlated samples between train and test and inflates the results. I used stratified image-level splitting to keep every image entirely within one split, then judged model selection on accuracy, AUC, precision and recall rather than accuracy alone.</p>
+          <p>Multiple captions can describe the same image, so a random split leaks correlated samples between train and test. I used stratified image-level splitting instead, then judged models on accuracy, AUC, precision and recall together.</p>
         </div>
-        <p class="desc" style="margin-bottom:20px;">A documented hyperparameter search across learning rate, dropout and layer-freezing strategies lifted validation AUC from 0.71 to 0.82, and the final model reached 72% accuracy and 0.80 AUC on held-out data, which held up close enough to validation to suggest it was generalising rather than memorising.</p>
+        <p class="desc" style="margin-bottom:20px;">A documented hyperparameter search lifted validation AUC from 0.71 to 0.82, and the final model reached 72% accuracy and 0.80 AUC on held-out data.</p>
         <div class="tags">
           <span class="tag">Python</span><span class="tag">TensorFlow</span><span class="tag">Keras</span>
           <span class="tag">BERT</span><span class="tag">ResNet50</span><span class="tag">scikit-learn</span>
@@ -461,7 +466,6 @@
   </section>
 
   <!-- ================= SKILLS ================= -->
-  <!-- Skills grouped into layers (languages, data/modelling, infra, delivery, cyber), shown as a vertical stack of pill tags -->
   <section id="skills" style="background:var(--bg-alt); border-top:1px solid var(--line); border-bottom:1px solid var(--line);">
     <div class="wrap">
       <div class="sec-head reveal">
@@ -511,7 +515,6 @@
   </section>
 
   <!-- ================= JOURNEY ================= -->
-  <!-- Work and volunteering history, newest first, styled as a vertical timeline -->
   <section id="journey">
     <div class="wrap">
       <div class="sec-head reveal">
@@ -579,7 +582,6 @@
   </section>
 
   <!-- ================= EDUCATION ================= -->
-  <!-- Degree cards plus a simple certifications list below them -->
   <section id="education" style="background:var(--bg-alt); border-top:1px solid var(--line); border-bottom:1px solid var(--line);">
     <div class="wrap">
       <div class="sec-head reveal">
@@ -628,11 +630,10 @@
 </main>
 
 <!-- ================= FOOTER ================= -->
-<!-- Closing contact block: email and social links, plus a bottom bar with name and location -->
 <footer id="contact">
   <div class="wrap">
     <p class="eyebrow" style="color:var(--amber-soft);">Contact</p>
-    
+
     <div class="footer-cta">
       <a href="mailto:samanalij27@outlook.com" class="btn btn-primary">samanalij27@outlook.com</a>
       <a href="https://github.com/Samanali-J" target="_blank" rel="noopener" class="btn btn-ghost">GitHub ↗</a>
@@ -640,19 +641,16 @@
     </div>
     <div class="foot-bottom">
       <span>Samanali Jayarathna · Melbourne, Australia</span>
-
     </div>
   </div>
 </footer>
 
 <script>
-  // Mobile nav: toggle the menu open/closed, and close it after any link is tapped
   const burger = document.getElementById('burgerBtn');
   const navLinks = document.getElementById('navLinks');
   burger.addEventListener('click', () => navLinks.classList.toggle('open'));
   navLinks.querySelectorAll('a').forEach(a => a.addEventListener('click', () => navLinks.classList.remove('open')));
 
-  // Scroll reveal: fade/rise each .reveal element in once it enters the viewport
   const observer = new IntersectionObserver((entries) => {
     entries.forEach(entry => {
       if (entry.isIntersecting) {
