@@ -506,15 +506,38 @@
         </div>
       </div>
 
+      <!-- Project 5: electoral database design, preferential vote count and query optimisation -->
+      <div class="project reveal">
+        <div class="project-top">
+          <div>
+            <h3>Counting 17 million votes the Australian way</h3>
+          </div>
+          <span class="project-tag">Database Design</span>
+        </div>
+        <img class="project-img" src="images/sql.png"
+             alt="SQL Server database design for a national electoral system with voter, ballot and preference tables">
+        <p class="desc">A national electoral system has to hold more than 17 million voter records and still count every valid ballot correctly, so the design had to stand up to both scale and accuracy. I designed and optimised the relational database in SQL Server, forecasting ten years of storage growth so the structure would keep performing as the electoral roll expands.</p>
+        <div class="callout">
+          <span class="label">The problem</span>
+          <p>Australia's preferential count is not a simple tally, since votes move between candidates over several rounds as the lowest are eliminated. I wrote stored procedures that apply majority thresholds, elimination order and preference redistribution, with SQL data quality checks validating each ballot first and excluding any with invalid, missing or duplicate preferences.</p>
+        </div>
+        <p class="desc" style="margin-bottom:20px;">Keeping queries fast at that size meant testing clustered, non-clustered and composite indexes alongside range partitioning, then reading the execution plan after every change and comparing join algorithms, which brought query time down by up to 45%.</p>
+        <div class="tags">
+          <span class="tag">SQL Server</span><span class="tag">T-SQL</span><span class="tag">Stored Procedures</span>
+          <span class="tag">Views &amp; Functions</span><span class="tag">Indexing</span><span class="tag">Partitioning</span><span class="tag">Query Plan Analysis</span>
+        </div>
+      </div>
+
       </div>
 
       <div class="projects-nav">
-        <span class="proj-count"><span id="projCurrent">1</span> / 4</span>
+        <span class="proj-count"><span id="projCurrent">1</span> / 5</span>
         <div class="projects-dots" id="projectsDots">
           <button class="proj-dot active" aria-label="Go to project 1" data-i="0"></button>
           <button class="proj-dot" aria-label="Go to project 2" data-i="1"></button>
           <button class="proj-dot" aria-label="Go to project 3" data-i="2"></button>
           <button class="proj-dot" aria-label="Go to project 4" data-i="3"></button>
+          <button class="proj-dot" aria-label="Go to project 5" data-i="4"></button>
         </div>
         <div class="projects-arrows">
           <button class="proj-arrow" id="projPrev" aria-label="Previous project" disabled>
